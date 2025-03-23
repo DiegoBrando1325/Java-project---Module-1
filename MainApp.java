@@ -1,6 +1,6 @@
 public class MainApp {
 
-    public void configKey(){
+    public void configAlf(){
     }
 
     public void encrypt(){
