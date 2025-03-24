@@ -6,10 +6,10 @@ public class CaesarCipher {
         this.alphabet = alphabet;
     }
 
-    public void readFile(){
+    private void readFile(){
     }
 
-    public void writeFile(){
+    private void writeFile(){
     }
 
     public void encrypt(){

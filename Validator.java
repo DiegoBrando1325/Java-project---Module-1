@@ -1,7 +1,12 @@
+import java.io.*;
+
 public class Validator {
-    private void isValidKey(){
+
+    public void isValidKey(){
     }
 
-    private void doFileExist(){
+    public static boolean doFileExist(String filePath){
+        File file = new File(filePath);
+        return file.exists() && file.isFile();
     }
 }
