@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class FileManager {
-    private int j = 0;
+
     public StringBuilder readFile(String filePath) throws InvalidFileException {
         if (Validator.doFileExist(filePath)){
             StringBuilder content = new StringBuilder();
@@ -25,18 +25,31 @@ public class FileManager {
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/TextoEncriptado%d.txt", j)))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/TextoEncriptado%d.txt", Contador.obtener())))){
             writer.write(content.toString());
         } catch (IOException e) {
             System.err.println("Error escribiendo en el archivo: " + e.getMessage());
         }
-        j++;
+        Contador.aumentar();
     }
 
     public class InvalidFileException extends Exception {
         public InvalidFileException() {
             super("Introduce un filepath válido.");
         }
+    }
+
+    private class Contador {
+        private static int j = 1;
+
+        private static int obtener(){
+            return j;
+        }
+
+        private static void aumentar(){
+            j++;
+        }
+
     }
 
 }
