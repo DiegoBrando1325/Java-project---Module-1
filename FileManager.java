@@ -2,7 +2,7 @@ import java.io.*;
 
 public class FileManager {
 
-    public StringBuilder readFile(String filePath) throws InvalidFileException {
+    public static StringBuilder readFile(String filePath) throws InvalidFileException {
         if (Validator.doFileExist(filePath)){
             StringBuilder content = new StringBuilder();
 
@@ -20,12 +20,12 @@ public class FileManager {
         }
     }
 
-    public void writeFile(StringBuilder content) {
+    public static void writeFile(StringBuilder content) {
         File folder = new File("output");
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/TextoEncriptado%d.txt", Contador.obtener())))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/TextoProcesado%d.txt", Contador.obtener())))){
             writer.write(content.toString());
         } catch (IOException e) {
             System.err.println("Error escribiendo en el archivo: " + e.getMessage());

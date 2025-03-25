@@ -1,8 +1,5 @@
 public class MainApp {
 
-    public void configAlf(){
-    }
-
     public void encrypt(){
     }
 
