@@ -25,31 +25,17 @@ public class FileManager {
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/"+fileName+"%d.txt", Contador.obtener())))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/"+ fileName +".txt")))){
             writer.write(content.toString());
         } catch (IOException e) {
             System.err.println("Error escribiendo en el archivo: " + e.getMessage());
         }
-        Contador.aumentar();
     }
 
     public static class InvalidFileException extends Exception {
         public InvalidFileException() {
             super("Introduce un filepath válido.");
         }
-    }
-
-    private class Contador {
-        private static int j = 1;
-
-        private static int obtener(){
-            return j;
-        }
-
-        private static void aumentar(){
-            j++;
-        }
-
     }
 
 }

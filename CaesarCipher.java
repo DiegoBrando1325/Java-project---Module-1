@@ -39,7 +39,8 @@ public class CaesarCipher {
         System.out.println("Archivo encriptado añadido a la carpeta output");
     }
 
-    public static void decrypt(String pathFile) throws FileManager.InvalidFileException {
+    public static StringBuilder decrypt(String pathFile, int newKey) throws FileManager.InvalidFileException {
+        if (newKey==0) newKey=key;
         StringBuilder mensajeEnc = FileManager.readFile(pathFile);
         StringBuilder mensajeDes = new StringBuilder();
 
@@ -48,13 +49,18 @@ public class CaesarCipher {
             char c = mensajeEnc.charAt(i);
             if (indicesEnc.containsKey(c)) {
                 int pos = indicesEnc.get(c);
-                int newPos = (pos - key + alfabeto_enc.size()) % alfabeto_enc.size();
+                int newPos = (pos - newKey + alfabeto_enc.size()) % alfabeto_enc.size();
                 mensajeDes.append(alfabeto_esp.get(newPos));
             }
         }
+        Validator.registrarPalabras(mensajeDes);
+        return mensajeDes;
+    }
+
+    public static void decrypt(String pathFile) throws FileManager.InvalidFileException {
+        StringBuilder mensajeDes = decrypt(pathFile, 0);
         FileManager.writeFile(mensajeDes, "MensajeDesencriptado");
         System.out.println("Archivo desencriptado añadido a la carpeta output");
-
     }
 
     public static int getKey(){
@@ -64,6 +70,10 @@ public class CaesarCipher {
     public static void setKey(int key) throws Validator.InvalidKeyException{
         if (key>alfabeto_esp.size()) throw new Validator.InvalidKeyException();
         else CaesarCipher.key=key;
+    }
+
+    public static int getAlfabetoSize(){
+        return alfabeto_enc.size();
     }
 
 }
