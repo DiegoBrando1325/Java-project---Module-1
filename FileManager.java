@@ -33,7 +33,7 @@ public class FileManager {
         Contador.aumentar();
     }
 
-    public class InvalidFileException extends Exception {
+    public static class InvalidFileException extends Exception {
         public InvalidFileException() {
             super("Introduce un filepath válido.");
         }

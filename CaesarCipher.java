@@ -2,8 +2,8 @@ import java.util.*;
 
 public class CaesarCipher {
     private static int key;
-    private static final List<Character> alfabeto_esp = Arrays.asList('а', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v','w', 'x', 'y', 'z', '«', '»', '\'', ':', '-', '!', '¡', '?', '¿', '.', ',', ';', '"', ' ');
-    private static final List<Character> alfabeto_enc = Arrays.asList('λ', 'ж', 'φ', 'ψ', 'Ѫ', 'Ҩ', 'ץ', 'Ӝ', 'ש', 'Ѿ', 'ҙ', 'ω', 'Ѯ', '҂', 'ҥ', 'ѱ', 'Ϟ', 'ґ', 'ӻ', 'Ҕ', 'Ӻ', 'Ѣ', 'Ѭ', 'Ҙ', 'Ӵ', 'Ӱ', 'Ҏ', 'Ϡ', 'ҕ', 'Ѫ', '҈', '§', '†', '∆', '¤', '№', '≠', '≈', '⌐', '∞', '¤');
+    private static final List<Character> alfabeto_esp = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v','w', 'x', 'y', 'z', '«', '»', '\'', ':', '-', '!', '¡', '?', '¿', '.', ',', ';', '"', ' ', '\n');
+    private static final List<Character> alfabeto_enc = Arrays.asList('λ', 'ж', 'φ', 'ψ', 'Ѫ', 'Ҩ', 'ץ', 'Ӝ', 'ש', 'Ѿ', 'ҙ', 'ω', 'Ѯ', '҂', 'ҥ', 'ѱ', 'Ϟ', 'ґ', 'ӻ', 'Ҕ', 'Ӻ', 'Ѣ', 'Ѭ', 'Ҙ', 'Ӵ', 'Ӱ', 'Ҏ', 'Ϡ', 'ҕ', 'ф', '҈', '§', '†', '∆', '¤', '№', '≠', '≈', '⌐', '∞', '¤', 'щ');
 
     private static final Map<Character, Integer> indices = new HashMap<>();
     private static final Map<Character, Integer> indicesEnc = new HashMap<>();
@@ -22,13 +22,13 @@ public class CaesarCipher {
         }
     }
 
-    public void encrypt(String pathFile) throws FileManager.InvalidFileException {
+    public static void encrypt(String pathFile) throws FileManager.InvalidFileException {
         StringBuilder mensajeEsp = FileManager.readFile(pathFile);
         StringBuilder mensajeEnc = new StringBuilder();
 
         //Ciclo de encriptación
         for (int i = 0; i < mensajeEsp.length(); i++) {
-            char c = mensajeEsp.charAt(i);
+            char c = Character.toLowerCase(mensajeEsp.charAt(i));
             if (indices.containsKey(c)) {
                 int pos = indices.get(c);
                 int newPos = (pos + key) % alfabeto_esp.size();
@@ -39,7 +39,7 @@ public class CaesarCipher {
         System.out.println("Archivo encriptado añadido a la carpeta output");
     }
 
-    public void decrypt(String pathFile) throws FileManager.InvalidFileException {
+    public static void decrypt(String pathFile) throws FileManager.InvalidFileException {
         StringBuilder mensajeEnc = FileManager.readFile(pathFile);
         StringBuilder mensajeDes = new StringBuilder();
 
