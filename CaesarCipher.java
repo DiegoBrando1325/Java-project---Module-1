@@ -35,7 +35,7 @@ public class CaesarCipher {
                 mensajeEnc.append(alfabeto_enc.get(newPos));
             }
         }
-        FileManager.writeFile(mensajeEnc);
+        FileManager.writeFile(mensajeEnc, "MensajeEncriptado");
         System.out.println("Archivo encriptado añadido a la carpeta output");
     }
 
@@ -52,7 +52,7 @@ public class CaesarCipher {
                 mensajeDes.append(alfabeto_esp.get(newPos));
             }
         }
-        FileManager.writeFile(mensajeDes);
+        FileManager.writeFile(mensajeDes, "MensajeDesencriptado");
         System.out.println("Archivo desencriptado añadido a la carpeta output");
 
     }
@@ -61,8 +61,9 @@ public class CaesarCipher {
         return key;
     }
 
-    public void setKey(int key){
-        this.key=key;
+    public static void setKey(int key) throws Validator.InvalidKeyException{
+        if (key>alfabeto_esp.size()) throw new Validator.InvalidKeyException();
+        else CaesarCipher.key=key;
     }
 
 }

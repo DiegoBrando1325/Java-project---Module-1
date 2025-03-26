@@ -20,12 +20,12 @@ public class FileManager {
         }
     }
 
-    public static void writeFile(StringBuilder content) {
+    public static void writeFile(StringBuilder content, String fileName) {
         File folder = new File("output");
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/TextoProcesado%d.txt", Contador.obtener())))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(String.format("output/"+fileName+"%d.txt", Contador.obtener())))){
             writer.write(content.toString());
         } catch (IOException e) {
             System.err.println("Error escribiendo en el archivo: " + e.getMessage());
