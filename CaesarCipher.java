@@ -3,7 +3,7 @@ import java.util.*;
 public class CaesarCipher {
     private static int key;
     private static final List<Character> alfabeto_esp = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v','w', 'x', 'y', 'z', '«', '»', '\'', ':', '-', '!', '¡', '?', '¿', '.', ',', ';', '"', ' ', '\n');
-    private static final List<Character> alfabeto_enc = Arrays.asList('λ', 'ж', 'φ', 'ψ', 'Ѫ', 'Ҩ', 'ץ', 'Ӝ', 'ש', 'Ѿ', 'ҙ', 'ω', 'Ѯ', '҂', 'ҥ', 'ѱ', 'Ϟ', 'ґ', 'ӻ', 'Ҕ', 'Ӻ', 'Ѣ', 'Ѭ', 'Ҙ', 'Ӵ', 'Ӱ', 'Ҏ', 'Ϡ', 'ҕ', 'ф', '҈', '§', '†', '∆', '¤', '№', '≠', '≈', '⌐', '∞', '¤', 'щ');
+    private static final List<Character> alfabeto_enc = Arrays.asList('λ', 'ж', 'φ', 'ψ', 'Ѫ', 'Ҩ', 'ץ', 'Ӝ', 'ש', 'Ѿ', 'ҙ', 'ω', 'Ѯ', '҂', 'ҥ', 'ѱ', 'Ϟ', 'ґ', 'ӻ', 'Ҕ', 'Ӻ', 'Ѣ', 'Ѭ', 'Ӵ', 'Ҙ', 'Ӱ', 'Ҏ', 'Ϡ', 'ҕ', 'ф', '҈', '§', '†', '∆', '¤', '№', '≠', '≈', '⌐', '∞', '¤', 'щ');
 
     private static final Map<Character, Integer> indices = new HashMap<>();
     private static final Map<Character, Integer> indicesEnc = new HashMap<>();

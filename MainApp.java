@@ -1,29 +1,63 @@
+import java.util.Scanner;
+
 public class MainApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
 
-    public void encrypt(){
-    }
+        System.out.println("\nBienvenido al programa de Cifrado César");
 
-    public void decrypt(){
-    }
+        do {
+            System.out.println("\n--- Menú ---");
+            System.out.println("1. Encriptar archivo");
+            System.out.println("2. Desencriptar archivo con clave");
+            System.out.println("3. Reiniciar diccionario");
+            System.out.println("0. Salir");
+            System.out.print("Seleccione una opción: ");
 
-    public void brutForce(){
-    }
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingrese un número válido.");
+                scanner.next();
+            }
+            opcion = scanner.nextInt();
+            scanner.nextLine();
 
-    public void analEst(){
-    }
+            switch (opcion) {
+                case 1 -> {
+                    System.out.print("Ingrese la ruta del archivo a encriptar: ");
+                    String pathEnc = scanner.nextLine();
+                    System.out.print("Ingrese la clave (entero): ");
+                    int keyEnc = scanner.nextInt();
+                    scanner.nextLine();
+                    try {
+                        CaesarCipher.setKey(keyEnc);
+                        CaesarCipher.encrypt(pathEnc);
+                    } catch (Exception e) {
+                        System.err.println("Error: " + e.getMessage());
+                    }
+                }
+                case 2 -> {
+                    System.out.print("Ingrese la ruta del archivo a desencriptar: ");
+                    String pathDec = scanner.nextLine();
+                    System.out.print("Ingrese la clave (entero): ");
+                    int keyDec = scanner.nextInt();
+                    scanner.nextLine();
+                    try {
+                        CaesarCipher.setKey(keyDec);
+                        CaesarCipher.decrypt(pathDec);
+                    } catch (Exception e) {
+                        System.err.println("Error: " + e.getMessage());
+                    }
+                }
+                case 3 -> {
+                    Validator.reiniciarDiccionario();
+                    System.out.println("Diccionario reiniciado correctamente.");
+                }
+                case 0 -> System.out.println("Saliendo del programa. ¡Hasta luego!");
+                default -> System.out.println("Opción no válida. Intente nuevamente.");
+            }
+        } while (opcion != 0);
 
-    public static void main(String[] args) throws FileManager.InvalidFileException, Validator.InvalidKeyException {
-        System.out.println("Antes del encryptado");
-        CaesarCipher.setKey(3);
-        System.out.println("Antes del encryptado");
-        CaesarCipher.encrypt("D:\\Drivers\\IntelliJ\\Projects\\PF-Mod1-DiegoMercado\\Prueba.txt");
-        System.out.println("Después del encryptado");
-        CaesarCipher.decrypt("D:\\Drivers\\IntelliJ\\Projects\\PF-Mod1-DiegoMercado\\output\\MensajeEncriptado.txt");
-        System.out.println("Después del desencriptado");
-        System.out.println(CaesarCipher.getKey());
-        Predict.decryptByBrutForce("D:\\Drivers\\IntelliJ\\Projects\\PF-Mod1-DiegoMercado\\output\\MensajeEncriptado.txt");
-        System.out.println("Después de brut force");
-        //Validator.reiniciarDiccionario();
+        scanner.close();
     }
 }
-
