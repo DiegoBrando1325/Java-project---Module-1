@@ -35,3 +35,229 @@ https://youtu.be/1nVGaNbvuXg?si=I1D0xMDTP1XGluIo
 https://youtu.be/aycEYQEHivY?si=EF42WMVQyb9icSDz
 https://youtu.be/PkpC1yzCJbE?si=8naKcyNh4EQ3IvcB
 https://youtu.be/WdyiUe7_3cA?si=sid01AFOMrG4otle
+
+
+12. RYR project walkthrough
+Pitch (30 sec): "At RYR, a construction materials distributor, I digitized the company's sales data: I designed a MySQL database, built a Python app to capture data, and automated ETL and reporting so management could make data-driven decisions."
+Fill in [confirm] items with your real details before the interview.
+1.  Understand the problem
+    ◦ Did: sales data existed but wasn't digitized or centralized; clients were material retailers, construction companies and architecture firms.
+    ◦ Concepts: requirements gathering, stakeholders (sales team, management), defining the grain.
+2.  Profile the existing data
+    ◦ Did: reviewed pre-existing records [confirm: Excel files / paper / other].
+    ◦ Concepts: data profiling (nulls, duplicates, inconsistent types and formats).
+3.  Design the model
+    ◦ Did: ER modeling, normalization, schema design.
+    ◦ Entities [confirm]: clients, products, sales, sale lines.
+    ◦ Concepts: 1NF–3NF, grain (one row per sale line), surrogate PK + UNIQUE natural key, FKs, DECIMAL for money.
+4.  Build the MySQL database
+    ◦ Concepts: DDL, constraints (PK, FK, UNIQUE, NOT NULL, CHECK), indexes on FK columns, audit columns (created_at, updated_at).
+5.  Build the data capture app
+    ◦ Did: Python desktop app (Tkinter/PyQt) for data entry and control.
+    ◦ Concepts: validation at entry, UNIQUE constraints to block duplicates, parameterized queries (prevents SQL injection).
+6.  Build the ETL pipeline
+    ◦ Did: pandas pipeline handling nulls, duplicates and type conversion.
+    ◦ Concepts: extract → transform → load, dedupe on a business key, idempotent load (MySQL: INSERT ... ON DUPLICATE KEY UPDATE), staging step.
+7.  Validate data quality
+    ◦ Concepts: row counts source vs. target, duplicate check (GROUP BY key HAVING COUNT(*) > 1), reconciliation of totals.
+8.  Generate reports
+    ◦ Did: Python + Excel reports; SQL queries on all sales data.
+    ◦ Concepts: aggregations, window functions, report for non-technical users.
+9.  Automate
+    ◦ Did: scheduled batch tasks for periodic processing [confirm: tool, e.g. Task Scheduler / cron; frequency].
+    ◦ Concepts: idempotent reruns, logging, failure alerts.
+10.  Analyze
+    ◦ Did: statistical analysis of sales; Excel pivot tables for quick analysis.
+11.  Results [confirm numbers]
+    ◦ Digitized existing data; automated data processing; reports for informed decisions.
+    ◦ Add metrics: records migrated, hours saved per week, report frequency.
+12.  What I'd do differently (shows growth)
+    ◦ Star schema for reporting, Git version control, automated tests, dbt, a cloud warehouse, an orchestrator.
+Stories this project supports: automation, learning quickly, ambiguous requirements, data quality, explaining to non-technical users (sales background).
+13. Behavioral stories (STAR)
+Tell each story in about 2 minutes, in the past tense, and say "I." Fill in [brackets] with your real details. Use generic names, never internal application names.
+Story 1: Production failure after an urgent change
+Covers: #1 Production incident, #5 Tight deadline
+• S: The client was retiring one of the tools our pipeline used, so we had to integrate a new platform into one of my application's cycles under a tight deadline.
+• T: I was responsible for implementing the change and making sure the first production run succeeded.
+• A: I delivered the change before the deadline by [how you prioritized]. On the first production run, one job failed. I told my manager right away and took ownership. I checked the job log and the script and found the root cause: duplicate entries for that job in the parameter file. Before fixing it, I checked with the upstream team whether data was expected for that run date. There wasn't, so there was no business impact, and we could fix it properly instead of rushing. I explained the root cause to the team, fixed it in a new branch, and promoted the fix through every environment to production. Then we reviewed the cause together and [concrete prevention step].
+• R: The new platform went live on time and worked as expected, and the client was satisfied with the result.
+Story 2: Automating a manual cycle
+Covers: #4 Automation, #14 Learning quickly
+• S: When I became responsible for my first application, one of its cycles had errors, so it was being run manually from a Linux server.
+• T: I had to keep it running for the business while documenting it and automating it in Control-M.
+• A: For [X] months, I ran the cycle manually so the business wasn't affected. At the same time, I documented its jobs and dependencies, fixed the scripts and the scheduling, and corrected the order date configuration, which controls which business date each run processes. To validate the loads, I had to learn Snowflake quickly: [how you learned].
+• R: The cycle now runs automatically. As the point of contact, my work moved from running it by hand to validating it: I verify the output and its integrity in Snowflake, notify downstream teams, and follow up with upstream teams on any missing data. [Hours saved per month]
+Story 3: Testing a 5-week platform integration
+Covers: #3 Data verification, #5 Planning
+• S: We integrated a new platform into one of my application's pipelines in 5 weeks, which was tight for the scope: 6 new Control-M jobs, 2 new scripts and Informatica changes.
+• T: I had to confirm in QA that the output was correct before moving to production.
+• A: Testing showed some missing records. Instead of assuming it was test noise, I [compared input and output to find exactly which records were missing] and asked the team. A teammate had deleted those records so the file would be processed as new, because that data had already been tested. Once I confirmed they were expected to be missing, I adjusted the expected results for the rest of the testing [and proposed communicating test data changes].
+• R: We delivered everything within the 5 weeks: the platform integration, 6 new jobs, 2 scripts and the Informatica changes. The client was satisfied. Lesson: changes to test data must be communicated, or you chase false defects, or miss real ones.
+Story 4: Decommissioning 85% of a high-priority application
+Covers: #2 Optimization, #6 Missed deadline, #7 Ambiguous requirements, #8 Collaboration
+• S: I was assigned to decommission most of a high-priority production application: 5 of its 6 processing cycles, about 85% of the application and more than 800 components across all environments, including Control-M jobs, Informatica mappings and workflows, and Git scripts. The scope was unclear: I was told to keep some service accounts because other applications might use them.
+• T: Retire every in-scope component by the deadline without affecting the remaining cycle, which still runs monthly with two sources, mainframe and Snowflake.
+• A: I [how you identified dependencies before removing components]. I coordinated with another team that was decommissioning a different application; we worked through the components together, and I helped them retire some of theirs. Near the end, it became clear the client expected everything retired, including the service accounts. I set up a direct conversation with the client, which hadn't happened at the start, and we agreed on a complete list. Since we couldn't finish by the original date, I [when] informed [who] and requested an extension.
+• R: We retired all 800+ components within the extended timeline, the remaining cycle kept running without issues, and the client was satisfied. The application became much simpler to maintain, with fewer points of failure. Lesson: confirm the full scope directly with the client at the start, in writing.
+Story 5: Hardcoded values, a disagreement with my manager
+Covers: #9 Disagreement, #10 Mistake, #11 Difficult feedback, #12 Trade-off decision
+• S: I wrote the scripts to integrate new tools into my application's pipeline under an urgent timeline. It was my first time building something like that, and some values were hardcoded: [e.g. file paths, dates, environment names].
+• T: Deliver a working integration for the production run.
+• A: My manager noticed the hardcoded parts, and at first I disagreed. My reasoning was:
+    ◦ The deadline was tight, and fewer moving parts meant less risk of a configuration error on the first run.
+    ◦ The scope was limited to this one integration, and those values weren't expected to change soon.
+    ◦ The process worked, and the values would be easy to correct once it was stable.
+  His points were:
+    ◦ The values differ between DEV, QA and PROD, so every promotion would need manual edits, which invites errors.
+    ◦ Any change to a value would mean modifying and redeploying code.
+    ◦ Technical debt grows: "we'll fix it later" often never happens.
+  After analyzing it further, I realized he was right: my arguments justified a short-term exception, not leaving it that way. The conversation was tense, but it stayed professional and productive. Then I had to decide how to fix it safely. I kept the working version for the upcoming production run, and meanwhile planned the changes, replaced the hardcoded values with [parameters / a config file], tested them, and deployed them to production before the next run.
+• R: The parameterized version reached production before the next cycle, with no disruption, and it now moves between environments without code changes. Since then, I parameterize from the start and ask for a review early.
+Story 6: Handling sensitive banking data
+Covers: #13 Sensitive data. Every [confirm] item must match what you actually do.
+• S: At TCS, I work on data pipelines for a banking client, which handle sensitive financial data.
+• T: Make sure only authorized people can access the data and that it stays complete and correct through the pipeline.
+• A:
+    ◦ Access: I administer Tableau access for the application. I grant access only through [the approved request process] and follow least privilege: each user gets only what their role needs. [confirm: you review or remove access that is no longer needed]
+    ◦ Transfer: data is delivered through SFTP, an encrypted channel.
+    ◦ Integrity: I validate data at each step in Snowflake, comparing counts and totals, so nothing is lost or altered.
+    ◦ Environments: [confirm: how production data is kept out of, or masked in, lower environments]
+    ◦ Confidentiality: I never share client data or details outside the project, which is why I describe it generically.
+• R: [confirm: no security incidents, a passed audit, or access requests handled correctly]
+Story 7: Modernizing RYR's data
+Covers: #15 Explaining to non-technical people, #4 Automation
+• S: At RYR, a construction materials distributor selling to retailers, construction companies and architecture firms, sales data existed but wasn't digitized or centralized [format], which made it hard to control and analyze.
+• T: Convince non-technical management to modernize it, then lead the implementation.
+• A: I proposed a plan focused on business benefits rather than technology: safer data, better control, less repetitive work and reports for decisions. I explained each technology in simple terms [your example or analogy]. After they approved it, I led the implementation:
+    ◦ designed a MySQL database from the existing data, using ER modeling and normalization;
+    ◦ built a Python desktop app (Tkinter/PyQt) for data capture and control;
+    ◦ built pandas ETL pipelines to clean nulls, duplicates and data types;
+    ◦ automated Python and Excel reports with scheduled batch tasks;
+    ◦ ran statistical analysis on sales data.
+• R: Management understood the need, the technology and the plan, approved it, and implemented it following my lead. The existing data was digitized, processing was automated, and reports supported decisions [add a number]. I also trained the team that continued the project after I left.
+14. Story coverage and gaps
+Every question type now has at least one story.
+#
+Question type
+Story
+1
+Production incident
+1
+2
+Optimization
+4 (also 2)
+3
+Data quality / verification
+3
+4
+Automation
+2, 7
+5
+Planning / tight deadline
+1, 3
+6
+Missed deadline
+4
+7
+Ambiguous requirements
+4
+8
+Cross-team collaboration
+4
+9
+Disagreement
+5
+10
+Mistake
+5
+11
+Difficult feedback
+5
+12
+Trade-off decision
+5
+13
+Sensitive data
+6
+14
+Learning quickly
+2
+15
+Explaining to non-technical people
+7
+Still to do before the interview:
+[ ] Fill in every [bracket], especially numbers (hours saved, months of manual runs).
+[ ] Confirm every item in Story 6 matches what you actually do.
+[ ] Optional: a story about the traceability reports you built without being asked (initiative, faster error resolution).
+[ ] Practice each story out loud and time it (about 2 minutes).
+15. Interview answers
+Practice these out loud. Learn the key points, not the exact words, so they sound natural.
+About you
+Tell me about yourself (about 90 seconds)
+I'm a biomedical engineer who found my passion in data. I started in neurotechnology research, where we collected brain-signal data and analyzed it to find biomarkers. That's where I realized I enjoy building the systems around the data as much as the analysis.
+At RYR, a construction materials company, I led the modernization of their data: I designed a MySQL database, built a Python app for data capture, and automated ETL and reporting.
+Today I'm a data engineer at TCS, working on data pipelines for a large banking client. I started in production support and moved into a data engineer role, and now I'm the point of contact for two applications. I've built pipeline changes that reached production, including a new platform integration delivered in five weeks, and I drove the retirement of more than 800 components of a legacy application. I present these changes directly to the client, and I've received very positive feedback from them.
+Now I'm looking for a role where I can work with a modern data stack, like dbt and cloud warehouses, take on more responsibility, and keep growing. That's why this role caught my attention.
+What is your greatest strength?
+Adapting quickly to new tools, teams and responsibilities. My biomedical background trained me to work between two worlds, doctors and engineers, translating needs from one side to the other. At TCS, I've changed teams several times, each with different technologies, dynamics and responsibilities, and each time I got up to speed quickly. That's how I became the point of contact for my own applications. For example, I had to learn Snowflake fast to validate the data of a cycle I was automating.
+What is your greatest weakness?
+I sometimes want every detail of a process before I start working on it, so I ask a lot of questions, and teammates can find some of them unnecessary. What I've learned is that the goal isn't more questions, but the right questions, to the right person, at the right time. In a decommissioning project, I asked my team many questions, but I didn't confirm the scope directly with the client, and that was the question that really mattered. Now I research on my own first: I read the documentation and write my own notes on the process. Then I group my remaining questions into one conversation with the person who owns the answer, and I state my assumptions so I can start working while I wait for confirmation.
+How would your manager or teammates describe you?
+Adaptable, curious and methodical. They'd also say I'm approachable and persistent: I keep trying different approaches until something works. For example, I ran a cycle manually for months while I worked out how to automate it, until it finally ran on its own.
+What are you most proud of in your career so far?
+Adapting to an industry that was new to me. I came from biomedical engineering, and I went from production support to being the point of contact for two applications, delivering production changes and retiring more than 800 components of a legacy application, while keeping the quality of my work consistent.
+Motivation
+Why Paylocity?
+Three reasons. First, the impact: payroll data decides whether people get paid correctly and on time, and data integrity is something I already care about in my work with banking data. Second, the challenge: Paylocity is bringing HR, payroll and finance together on one platform, and that kind of data integration is exactly what I enjoy. Third, growth: I want to move from consulting to a product company, where I can own the data long term, and the team works with technologies I want to master, like dbt and cloud warehouses. I also like the people-first culture and the company's growth, including here in Guadalajara.
+Why this role, and why data engineering?
+I enjoy being the person who makes data reliable: designing how it's stored, moved and validated so other people can trust it. Over time, I want to understand the full data lifecycle, from ingestion to how analysts and the business use the data, because that makes me a better data engineer.
+Why are you leaving TCS?
+I've learned a lot at TCS: the processes of a critical banking project, how large teams work, and the discipline that sensitive data requires. Now I'm ready for more responsibility and a more modern data stack. My project relies mostly on legacy technology, and the security restrictions of the client environment make it difficult to move to other projects or technologies. So I'm looking for a company where I can keep growing with current tools.
+Where do you see yourself in 3 to 5 years?
+As a senior data engineer, leading technical decisions and, eventually, a team. I want to grow from the ground up, understanding how teams really work, so that one day I can build a team that supports each other, acts with integrity and delivers excellent work. Along the way, I want to keep improving processes and bring new technologies and practices into the team.
+What motivates you at work?
+Learning and seeing progress, both mine and the team's. I especially enjoy organizing people and resources to face a challenge together, and seeing everyone grow professionally in the process.
+How you work
+How do you handle pressure or tight deadlines?
+I work well under pressure because I plan first. I list everything needed to complete the requirement, break it into steps and set time for each. When we had five weeks to integrate a new platform, with 6 new jobs, 2 new scripts and Informatica changes, planning that way is what let us deliver on time. I also rely on the team: when we support each other, pressure becomes manageable.
+How do you prioritize when you have several urgent tasks?
+First, I list everything that needs to be done. Then I prioritize by impact: what affects the business or downstream teams, what has a fixed deadline, and what is blocking other people. I plan the work in time, and if something doesn't fit, I tell my manager or stakeholders early and agree on the trade-off. When it helps, I ask for support to understand a process faster or to split the work, so downstream teams aren't affected.
+What kind of manager or environment brings out your best?
+Managers who communicate clearly and are patient enough to help their team grow. I also do my best in environments where people help each other. I'm approachable and I like helping teammates who need it, so we deliver our best work and improve our skills along the way.
+How do you like to receive feedback?
+In a call or in person, so I can ask questions and fully understand what I need to improve. I appreciate it when it's early and specific. For feedback about how the team works, I like discussing it together, for example in a retrospective, so the whole team improves its communication.
+How do you keep learning?
+I keep looking for courses and training. For example, I completed dbt training, and I built a machine learning project on my own to predict cardiovascular disease. I also like bringing new ideas to my team and proposing improvements, even outside my direct responsibilities, like the traceability reports I built without being asked, which made errors faster to resolve.
+What would you do in your first 90 days?
+• First 30 days: understand the business, the data, the tools and how the team works. Learn the data model and the quality standards, meet the stakeholders, and take on first small tasks.
+• By 60 days: work independently on regular tasks and deliver my first pipeline change or improvement.
+• By 90 days: own a part of the platform, propose improvements based on what I've learned, and start taking on more responsibility.
+Paylocity values
+Which of our values resonates most with you?
+Growth Fuels Opportunity. My career is an example of it: I came from biomedical engineering, and every time I grew my skills, new opportunities opened, from production support to owning applications. I like that at Paylocity it applies to individuals, teams and clients, and that the company grows the same way, expanding from payroll and HR into finance. In my conversations with the team so far, I've also seen openness to different ideas, which is the kind of environment where people can grow.
+What does "Be unbeatable together" mean to you?
+That a team's strength comes from collective effort: using what each person brings, supporting each other's learning and communicating well. For example, during a decommissioning project, I coordinated with another team that was retiring a different application, and I helped them retire some of their components. We both moved faster than we would have alone.
+Technical thought process
+Walk me through the architecture of your current pipeline.
+Every month we receive hundreds of thousands of records from mainframe sources. They go through a mainframe file platform that records and controls the files, then through Informatica PowerCenter for transformation, and they land in Snowflake. Control-M orchestrates the jobs, the pipeline code lives in Bash scripts managed in GitLab, and data reaches downstream consumers through SFTP. My role is to validate data integrity, coordinate with upstream and downstream teams so the application runs correctly, and adapt the application to the client's new needs, like the recent platform integration.
+How do you make sure the data you deliver is correct?
+First, I check volumes: that the number of records matches what we expected. Then I verify integrity by comparing the output with the source data, using counts and totals. I confirm with upstream teams what data was expected, and with downstream teams that they received it correctly, and I report any findings. I also built traceability reports that make it faster to trace and resolve errors.
+Which tools from the job description have you used?
+I've worked with Snowflake and Python, and I completed dbt training and used it in some work, so I want to go deeper with dbt. I haven't used Redshift or BigQuery yet, but they're cloud data warehouses like Snowflake, columnar and massively parallel, so many concepts transfer and I'd learn the specifics quickly.
+What technology would you like to learn next?
+AWS and modern cloud warehouses. Most modern data platforms run in the cloud, and my current project relies mostly on legacy tools, so it's the natural next step for my career.
+Logistics
+• Salary expectation: "Around 55,000 MXN per month [confirm: gross], and I'm flexible depending on the full benefits package."
+• Notice period: "Two weeks."
+• Location: "Yes, I live in the Guadalajara metro area, and I can work on-site." Ask the recruiter about the work model (on-site, hybrid or remote).
+Questions for them
+Ask 2 or 3, depending on the time left.
+1.  If I joined the team, which technologies would you like me to study or strengthen before starting?
+2.  What qualities are you looking for in the person who joins the team?
+3.  What advice would you give someone who wants to understand your current processes quickly and then help improve them?
+4.  What does growth look like for someone in this position, and what does it take to get there?
+5.  What is the biggest challenge the team is facing right now?
+6.  How does it look the paylocity you personally would like to see?
+7.  For Amber: How does the team approach data modeling standards and data quality?
+8.  For Lori: What brought you back to Paylocity?
